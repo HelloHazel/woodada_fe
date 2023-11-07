@@ -23,8 +23,9 @@ class _MainScreenState extends State<MainScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('어서오세요!'),
-          content: const Text('앱에 오신 것을 환영합니다.'),
+          title: const Text('꽃길만 걷는 우리, \n우다다에 오신 것을 환영해요!'),
+          content:
+              const Text('보호자님과 반려견 프로필 정보를 입력하면 \n더 많은 우다다 서비스를 이용할 수 있어요.'),
           actions: <Widget>[
             ElevatedButton(
               onPressed: () {

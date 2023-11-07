@@ -39,6 +39,7 @@ dependencies:
   flutter_naver_login: ^1.8.0
   flutter_secure_storage: ^9.0.0
   permission_handler: ^11.0.1
+  image_picker: ^1.0.4
 
 dev_dependencies:
   flutter_test:
@@ -67,6 +68,7 @@ flutter:
     - asset/img/food/
     - asset/svg/icon/
     - asset/img/logo/
+    - asset/img/common/
     - asset/rive/
     - asset/login_button/kakao_btn.png
     - asset/login_button/naver_btn.png
