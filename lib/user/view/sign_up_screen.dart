@@ -1,9 +1,10 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
 import 'package:image_picker/image_picker.dart';
+import 'package:woodada/common/components/custom_text_form_field.dart';
 import 'package:woodada/common/layout/default_layout.dart';
+import 'package:woodada/user/view/pet_sign_up_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -14,112 +15,145 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _nickNameController = TextEditingController();
-  DateTime? _selectedDate;
-  XFile? _pickedFile;
 
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime picked = (await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
-    ))!;
-    if (picked != _selectedDate) {
-      setState(() {
-        _selectedDate = picked;
-      });
-    }
-  }
+  XFile? _pickedFile;
 
   @override
   Widget build(BuildContext context) {
     final imageSize = MediaQuery.of(context).size.width / 4;
     return DefaultLayout(
       title: '정보입력',
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [], // 아이템은 빈 리스트로 남겨두고
-        type: BottomNavigationBarType.fixed,
-        fixedColor: Colors.blue, // 선택된 텍스트 색상
-        showSelectedLabels: true, // 선택된 항목에 레이블 표시
-        showUnselectedLabels: true, // 선택되지 않은 항목에 레이블 표시
-        selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
-        unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.normal),
-        currentIndex: 0, // 현재 선택된 항목의 인덱스 (가입하기를 표시하려면 0으로 설정)
-        onTap: (int index) {
-          // 다른 항목을 누르면 이벤트 처리
-        },
-      ),
-      child: SingleChildScrollView(
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16.0,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                const SizedBox(height: 16.0),
-                const Text(
-                  '보호자 정보 입력',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black,
-                  ),
+      child: Stack(
+        children: [
+          SingleChildScrollView(
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
                 ),
-                const SizedBox(height: 16.0),
-                if (_pickedFile == null)
-                  Container(
-                    constraints: BoxConstraints(
-                      minHeight: imageSize,
-                      minWidth: imageSize,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const SizedBox(height: 16.0),
+                    const Text(
+                      '보호자 정보 입력',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black,
+                      ),
                     ),
-                    child: GestureDetector(
-                      onTap: () {
-                        _showBottomSheet();
-                      },
-                      child: Center(
-                        child: Icon(
-                          Icons.account_circle,
-                          size: imageSize,
+                    const SizedBox(height: 16.0),
+                    if (_pickedFile == null)
+                      Container(
+                        constraints: BoxConstraints(
+                          minHeight: imageSize,
+                          minWidth: imageSize,
+                        ),
+                        child: GestureDetector(
+                          onTap: () {
+                            _showBottomSheet();
+                          },
+                          child: Center(
+                            child: Icon(
+                              Icons.account_circle,
+                              size: imageSize,
+                            ),
+                          ),
+                        ),
+                      )
+                    else
+                      Center(
+                        child: Container(
+                          width: imageSize,
+                          height: imageSize,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                                width: 2,
+                                color: Theme.of(context).colorScheme.primary),
+                            image: DecorationImage(
+                                image: FileImage(File(_pickedFile!.path)),
+                                fit: BoxFit.cover),
+                          ),
                         ),
                       ),
+                    const SizedBox(height: 16.0),
+                    const Text('닉네임 (필수)'),
+                    const SizedBox(height: 8.0),
+                    CustomTextFormField(
+                      hintText: '닉네임',
+                      onChanged: (String value) {},
+                      obscureText: true,
+                      maxLines: 1,
                     ),
-                  )
-                else
-                  Center(
-                    child: Container(
-                      width: imageSize,
-                      height: imageSize,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                            width: 2,
-                            color: Theme.of(context).colorScheme.primary),
-                        image: DecorationImage(
-                            image: FileImage(File(_pickedFile!.path)),
-                            fit: BoxFit.cover),
+                    const SizedBox(height: 16.0),
+                    const Text('활동지역'),
+                    const SizedBox(height: 8.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        DropdownButton<String>(
+                          value: '활동지역1',
+                          onChanged: (String? newValue) {
+                            // 여기서 선택된 값을 처리
+                          },
+                          items: <String>[
+                            '활동지역1',
+                            '활동지역2',
+                            '활동지역3',
+                            '활동지역4',
+                          ].map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                        const SizedBox(width: 6.0),
+                        DropdownButton<String>(
+                          value: '활동지역2',
+                          onChanged: (String? newValue) {
+                            // 여기서 선택된 값을 처리
+                          },
+                          items: <String>[
+                            '활동지역1',
+                            '활동지역2',
+                            '활동지역3',
+                            '활동지역4',
+                          ].map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16.0),
+                    const Text('자기소개 (선택)'),
+                    const SizedBox(height: 8.0),
+                    CustomTextFormField(
+                      hintText: '자기소개를 입력하세요',
+                      onChanged: (String value) {},
+                      obscureText: false,
+                      height: 150,
+                      maxLines: 10,
+                    ),
+                    const SizedBox(height: 16.0),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 10.0),
+                        child: buildStartButton(),
                       ),
                     ),
-                  ),
-                const SizedBox(height: 16.0),
-                TextFormField(
-                  controller: _nickNameController,
-                  decoration: const InputDecoration(labelText: '닉네임'),
+                  ],
                 ),
-                const SizedBox(height: 16.0),
-                ElevatedButton(
-                  onPressed: () {
-                    // Do something with the collected user data, e.g., save it to a database
-                    // You can access the values with _nickNameController.text, _selectedAgeGroup,
-                    // _selectedDate, and _selectedGender
-                  },
-                  child: const Text('가입하기'),
-                ),
-              ],
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -192,20 +226,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
       }
     }
   }
-}
 
-class _TItle extends StatelessWidget {
-  const _TItle();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Text(
-      '보호자 정보 입력',
-      style: TextStyle(
-        fontSize: 34,
-        fontWeight: FontWeight.w500,
-        color: Colors.black,
-      ),
-    );
+  Widget buildStartButton() {
+    return ElevatedButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const PetSignUpScreen(),
+            ),
+          );
+        },
+        style: ElevatedButton.styleFrom(
+          minimumSize: const Size(300, 35), // 버튼의 최소 크기를 조절
+        ),
+        child: const Text('다음'));
   }
 }

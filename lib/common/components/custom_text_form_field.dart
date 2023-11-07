@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:woodada/common/const/colors.dart';
 
 class CustomTextFormField extends StatelessWidget {
-  //null값일 경우를 대비
   final String? hintText;
   final String? errorText;
   final bool obscureText;
   final bool autoFocus;
   final ValueChanged<String>? onChanged;
-  final double? height; // 높이 파라미터 추가
+  final double? height;
+  final int? maxLines; // maxLines 파라미터 추가
 
   const CustomTextFormField({
     required this.onChanged,
@@ -16,9 +16,10 @@ class CustomTextFormField extends StatelessWidget {
     this.autoFocus = false,
     this.hintText,
     this.errorText,
-    this.height, // 높이 파라미터 추가
-    super.key,
-  });
+    this.height,
+    this.maxLines, // maxLines 파라미터 추가
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,14 +31,13 @@ class CustomTextFormField extends StatelessWidget {
     );
 
     return SizedBox(
-      // 높이 조절을 위해 SizedBox로 감싸기
-      height: height ?? 50, // 높이 파라미터 사용 또는 기본값인 60 사용
+      height: height ?? 50,
       child: TextFormField(
         cursorColor: PRIMARY_COLOR,
-        //pwd 입력시 자동 필터링
         obscureText: obscureText,
         autofocus: autoFocus,
         onChanged: onChanged,
+        maxLines: maxLines, // maxLines 적용
         decoration: InputDecoration(
           contentPadding:
               const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
@@ -48,10 +48,8 @@ class CustomTextFormField extends StatelessWidget {
             fontSize: 14,
           ),
           fillColor: Colors.white,
-          //false - 배경색 있음 , true - 배경색 없음
           filled: true,
-          //모든 input 상태의 기본 스타일 세팅
-          border: baseBorder, // 여기서 baseBorder를 사용합니다.
+          border: baseBorder,
           enabledBorder: baseBorder,
           focusedBorder: baseBorder.copyWith(
             borderSide: baseBorder.borderSide.copyWith(
@@ -63,10 +61,3 @@ class CustomTextFormField extends StatelessWidget {
     );
   }
 }
-
-// 💡사용법
-// CustomTextFormField(
-//   hintText : '사용하고 싶은 말 (placeholder와 같이 사용)',
-//   onChanged : (String value) {},
-//   obscureText : true
-// )

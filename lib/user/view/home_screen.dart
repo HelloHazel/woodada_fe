@@ -12,6 +12,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool isLocationPermissionGranted = false;
+  bool isAllAgreed = false;
+  bool isLocationAgreed = false;
 
   @override
   void initState() {
@@ -33,11 +35,30 @@ class _HomeScreenState extends State<HomeScreen> {
     if (status.isGranted) {
       setState(() {
         isLocationPermissionGranted = true;
-        print('1');
       });
     } else {
       print("Location permission not granted: $status");
     }
+  }
+
+  Future<void> _showAgreementAlert(BuildContext context) async {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('약관 동의 필요'),
+          content: const Text('위치 기반 서비스 약관에 동의해야 서비스를 이용할 수 있습니다.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('확인'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -56,21 +77,42 @@ class _HomeScreenState extends State<HomeScreen> {
                 _Title(),
                 const SizedBox(height: 20),
                 _CheckBox(
-                  isLocationPermissionGranted: isLocationPermissionGranted,
+                  isAllAgreed: isAllAgreed,
+                  isLocationAgreed: isLocationAgreed,
                   onRequestLocationPermission: _requestLocationPermission,
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const MainScreen(),
-                      ),
-                    );
+                  onAllAgreementChange: (agreed) {
+                    setState(() {
+                      isAllAgreed = agreed;
+                    });
                   },
-                  child: const Text('시작하기'),
+                  onLocationAgreementChange: (agreed) {
+                    setState(() {
+                      isLocationAgreed = agreed;
+                    });
+                  },
                 ),
               ],
+            ),
+          ),
+          const Expanded(
+            child: SizedBox(),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18.0),
+            child: ElevatedButton(
+              onPressed: () {
+                if (isAllAgreed) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MainScreen(),
+                    ),
+                  );
+                } else {
+                  _showAgreementAlert(context);
+                }
+              },
+              child: const Text('시작하기'),
             ),
           ),
         ],
@@ -99,22 +141,28 @@ class _Title extends StatelessWidget {
 
 class _CheckBox extends StatefulWidget {
   const _CheckBox({
-    required this.isLocationPermissionGranted,
+    required this.isAllAgreed,
+    required this.isLocationAgreed,
     required this.onRequestLocationPermission,
+    required this.onAllAgreementChange,
+    required this.onLocationAgreementChange,
   });
 
-  final bool isLocationPermissionGranted;
+  final bool isAllAgreed;
+  final bool isLocationAgreed;
   final VoidCallback onRequestLocationPermission;
+  final ValueChanged<bool> onAllAgreementChange;
+  final ValueChanged<bool> onLocationAgreementChange;
 
   @override
-  _CheckBoxState createState() => _CheckBoxState(isLocationPermissionGranted);
+  _CheckBoxState createState() => _CheckBoxState(isLocationAgreed, isAllAgreed);
 }
 
 class _CheckBoxState extends State<_CheckBox> {
-  _CheckBoxState(this.isLocationAgreed);
+  _CheckBoxState(this.isLocationAgreed, this.isAllAgreed);
 
-  bool isAllAgreed = false;
   bool isLocationAgreed;
+  bool isAllAgreed;
 
   @override
   Widget build(BuildContext context) {
@@ -129,6 +177,8 @@ class _CheckBoxState extends State<_CheckBox> {
                   isAllAgreed = value!;
                   isLocationAgreed = value;
                 });
+                widget.onAllAgreementChange(isAllAgreed);
+                widget.onLocationAgreementChange(isLocationAgreed);
                 widget.onRequestLocationPermission();
               },
             ),
@@ -154,6 +204,7 @@ class _CheckBoxState extends State<_CheckBox> {
                 setState(() {
                   isLocationAgreed = value!;
                 });
+                widget.onLocationAgreementChange(isLocationAgreed);
                 widget.onRequestLocationPermission();
               },
             ),
