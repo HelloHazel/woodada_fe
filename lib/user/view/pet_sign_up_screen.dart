@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:woodada/common/components/custom_text_form_field.dart';
 import 'package:woodada/common/layout/default_layout.dart';
+import 'package:woodada/user/view/web_view_screen.dart';
 
 class PetSignUpScreen extends StatefulWidget {
   const PetSignUpScreen({Key? key}) : super(key: key);
@@ -242,7 +243,12 @@ class _PetSignUpScreenState extends State<PetSignUpScreen> {
   Widget buildStartButton() {
     return ElevatedButton(
         onPressed: () {
-          // Handle the logic when the button is pressed
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => WebViewScreen(),
+            ),
+          );
         },
         style: ElevatedButton.styleFrom(
           minimumSize: const Size(300, 35), // 버튼의 최소 크기를 조절

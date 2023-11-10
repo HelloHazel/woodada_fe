@@ -41,6 +41,7 @@ dependencies:
   permission_handler: ^11.0.1
   image_picker: ^1.0.4
   custom_radio_grouped_button: any
+  webview_flutter: ^4.4.2
 
 dev_dependencies:
   flutter_test:
