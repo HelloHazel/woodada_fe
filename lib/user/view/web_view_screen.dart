@@ -33,11 +33,11 @@ class _WebViewScreenState extends State<WebViewScreen> {
         onWebResourceError: (WebResourceError error) {
           // 웹 페이지 리소스 로딩 중에 오류가 발생할 때 호출되는 콜백입니다.
           debugPrint('''         
-                        Page resource error:
-                          code: ${error.errorCode}
-                          description: ${error.description}         
-                          errorType: ${error.errorType}          
-                          isForMainFrame: ${error.isForMainFrame}        
+            Page resource error:
+            code: ${error.errorCode}
+            description: ${error.description}         
+            errorType: ${error.errorType}          
+            isForMainFrame: ${error.isForMainFrame}        
                     ''');
         },
         onNavigationRequest: (NavigationRequest request) {
