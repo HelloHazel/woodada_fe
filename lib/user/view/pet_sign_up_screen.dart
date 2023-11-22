@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:woodada/common/components/custom_text_form_field.dart';
 import 'package:woodada/common/layout/default_layout.dart';
+import 'package:woodada/user/view/main_screen.dart';
+import 'package:woodada/common/view/root_tab.dart';
 import 'package:woodada/user/view/web_view_screen.dart';
 
 class PetSignUpScreen extends StatefulWidget {
@@ -246,7 +248,7 @@ class _PetSignUpScreenState extends State<PetSignUpScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => WebViewScreen(),
+              builder: (context) => const MainScreen(),
             ),
           );
         },

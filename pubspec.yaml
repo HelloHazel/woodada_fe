@@ -71,6 +71,7 @@ flutter:
     - asset/svg/icon/
     - asset/img/logo/
     - asset/img/common/
+    - asset/img/pet/
     - asset/rive/
     - asset/login_button/kakao_btn.png
     - asset/login_button/naver_btn.png

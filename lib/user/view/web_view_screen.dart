@@ -23,7 +23,6 @@ class _WebViewScreenState extends State<WebViewScreen> {
         },
         onPageStarted: (String url) {
           // 웹 페이지 로딩이 시작될 때 호출되는 콜백입니다.
-
           debugPrint('Page started loading: $url');
         },
         onPageFinished: (String url) {
